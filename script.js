@@ -81,12 +81,34 @@ if (originalToggleButtons.length > 0) {
 }
 
 const openCosmikProjectLink = document.querySelector('[data-open-cosmik-project]');
+const cosmikIframe = document.querySelector('[data-cosmik-iframe]');
+
+const getCosmikBaseUrl = () => {
+  const host = window.location.hostname;
+  const isLocalHost = host === '127.0.0.1' || host === 'localhost';
+
+  if (isLocalHost && window.location.port === '9900') {
+    return 'http://127.0.0.1:9900/cosmik';
+  }
+
+  return 'http://127.0.0.1:8080';
+};
+
+const cosmikBaseUrl = getCosmikBaseUrl();
+
+if (cosmikIframe instanceof HTMLIFrameElement) {
+  cosmikIframe.src = `${cosmikBaseUrl}/visualizer?embed=1`;
+}
+
+if (openCosmikProjectLink instanceof HTMLAnchorElement) {
+  openCosmikProjectLink.href = `${cosmikBaseUrl}/`;
+}
 
 if (openCosmikProjectLink) {
   openCosmikProjectLink.addEventListener('click', event => {
     event.preventDefault();
     const portfolioReturn = encodeURIComponent(window.location.href);
-    window.location.href = `http://127.0.0.1:9900/cosmik/?portfolioReturn=${portfolioReturn}`;
+    window.location.href = `${cosmikBaseUrl}/?portfolioReturn=${portfolioReturn}`;
   });
 }
 
