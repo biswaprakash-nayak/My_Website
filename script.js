@@ -88,10 +88,10 @@ const getCosmikBaseUrl = () => {
   const isLocalHost = host === '127.0.0.1' || host === 'localhost';
 
   if (isLocalHost && window.location.port === '9900') {
-    return 'http://127.0.0.1:9900/cosmik';
+    return `${window.location.origin}/cosmik`;
   }
 
-  return 'http://127.0.0.1:8080';
+  return `${window.location.origin}/cosmik`;
 };
 
 const cosmikBaseUrl = getCosmikBaseUrl();
