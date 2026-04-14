@@ -80,6 +80,16 @@ if (originalToggleButtons.length > 0) {
   });
 }
 
+const openCosmikProjectLink = document.querySelector('[data-open-cosmik-project]');
+
+if (openCosmikProjectLink) {
+  openCosmikProjectLink.addEventListener('click', event => {
+    event.preventDefault();
+    const portfolioReturn = encodeURIComponent(window.location.href);
+    window.location.href = `http://127.0.0.1:9901/?portfolioReturn=${portfolioReturn}`;
+  });
+}
+
 const observer = new IntersectionObserver(
   entries => {
     entries.forEach(entry => {
@@ -431,4 +441,357 @@ if (cosmikScenes.length > 0) {
     });
   });
 }
+
+const buildPhotoUrl = filename => `photo%20galary/${encodeURIComponent(filename)}`;
+
+const loadPhotoManifest = async () => {
+  try {
+    const response = await fetch('photo-gallery-manifest.json', { cache: 'no-store' });
+    if (!response.ok) {
+      return [];
+    }
+    const parsed = await response.json();
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+    return parsed.filter(name => typeof name === 'string' && name.trim().length > 0);
+  } catch {
+    return [];
+  }
+};
+
+const initHobbiesExperience = async () => {
+  const rollingTracks = document.querySelectorAll('[data-rolling-track]');
+
+  if (rollingTracks.length === 0) {
+    return;
+  }
+
+  const filenames = await loadPhotoManifest();
+
+  if (filenames.length === 0) {
+    return;
+  }
+
+  const renderRollingTrack = (trackElement, files) => {
+    if (!(trackElement instanceof HTMLElement) || files.length === 0) {
+      return;
+    }
+
+    trackElement.innerHTML = '';
+    const doubled = [...files, ...files];
+
+    doubled.forEach((filename, index) => {
+      const image = document.createElement('img');
+      image.src = buildPhotoUrl(filename);
+      image.alt = `Photography preview ${index + 1}`;
+      image.loading = 'lazy';
+      trackElement.appendChild(image);
+    });
+  };
+
+  const firstStrip = filenames.slice(0, 24);
+  const secondStrip = filenames.slice(24, 48);
+
+  renderRollingTrack(rollingTracks[0], firstStrip.length > 0 ? firstStrip : filenames.slice(0, 16));
+  renderRollingTrack(rollingTracks[1], secondStrip.length > 0 ? secondStrip : filenames.slice(8, 24));
+};
+
+const initPhotoGalleryPage = async () => {
+  const galleryGrid = document.querySelector('[data-gallery-page-grid]');
+
+  if (!(galleryGrid instanceof HTMLElement)) {
+    return;
+  }
+
+  const filenames = await loadPhotoManifest();
+
+  if (filenames.length === 0) {
+    galleryGrid.innerHTML = '<p class="gallery-empty">No photos found.</p>';
+    return;
+  }
+
+  const photoUrls = filenames.map(buildPhotoUrl);
+  let activePhotoIndex = 0;
+  let wheelLocked = false;
+  let overlayScale = 1;
+  const minOverlayScale = 1;
+  const maxOverlayScale = 3;
+  const overlayScaleStep = 0.2;
+  let isPanning = false;
+  let panStartX = 0;
+  let panStartY = 0;
+  let panStartScrollLeft = 0;
+  let panStartScrollTop = 0;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'gallery-overlay';
+  overlay.setAttribute('hidden', '');
+
+  const overlayShell = document.createElement('div');
+  overlayShell.className = 'gallery-overlay-shell';
+
+  const closeButton = document.createElement('button');
+  closeButton.type = 'button';
+  closeButton.className = 'gallery-overlay-close';
+  closeButton.textContent = 'Close';
+  closeButton.setAttribute('aria-label', 'Close gallery viewer');
+
+  const prevButton = document.createElement('button');
+  prevButton.type = 'button';
+  prevButton.className = 'gallery-overlay-nav gallery-overlay-nav-up';
+  prevButton.textContent = '↑';
+  prevButton.setAttribute('aria-label', 'Previous image');
+
+  const overlayViewport = document.createElement('div');
+  overlayViewport.className = 'gallery-overlay-viewport';
+
+  const overlayImage = document.createElement('img');
+  overlayImage.className = 'gallery-overlay-image';
+  overlayImage.alt = 'Expanded gallery image';
+
+  overlayViewport.appendChild(overlayImage);
+
+  const nextButton = document.createElement('button');
+  nextButton.type = 'button';
+  nextButton.className = 'gallery-overlay-nav gallery-overlay-nav-down';
+  nextButton.textContent = '↓';
+  nextButton.setAttribute('aria-label', 'Next image');
+
+  const overlayCounter = document.createElement('p');
+  overlayCounter.className = 'gallery-overlay-counter';
+
+  const zoomControls = document.createElement('div');
+  zoomControls.className = 'gallery-overlay-zoom-controls';
+
+  const zoomOutButton = document.createElement('button');
+  zoomOutButton.type = 'button';
+  zoomOutButton.className = 'gallery-overlay-zoom-btn';
+  zoomOutButton.textContent = '-';
+  zoomOutButton.setAttribute('aria-label', 'Zoom out');
+
+  const zoomResetButton = document.createElement('button');
+  zoomResetButton.type = 'button';
+  zoomResetButton.className = 'gallery-overlay-zoom-btn';
+  zoomResetButton.textContent = '100%';
+  zoomResetButton.setAttribute('aria-label', 'Reset zoom');
+
+  const zoomInButton = document.createElement('button');
+  zoomInButton.type = 'button';
+  zoomInButton.className = 'gallery-overlay-zoom-btn';
+  zoomInButton.textContent = '+';
+  zoomInButton.setAttribute('aria-label', 'Zoom in');
+
+  zoomControls.appendChild(zoomOutButton);
+  zoomControls.appendChild(zoomResetButton);
+  zoomControls.appendChild(zoomInButton);
+
+  overlayShell.appendChild(closeButton);
+  overlayShell.appendChild(prevButton);
+  overlayShell.appendChild(overlayViewport);
+  overlayShell.appendChild(nextButton);
+  overlayShell.appendChild(zoomControls);
+  overlayShell.appendChild(overlayCounter);
+  overlay.appendChild(overlayShell);
+  document.body.appendChild(overlay);
+
+  const updateOverlayScale = () => {
+    overlayScale = Math.min(maxOverlayScale, Math.max(minOverlayScale, overlayScale));
+    overlayImage.style.transform = `scale(${overlayScale})`;
+    zoomResetButton.textContent = `${Math.round(overlayScale * 100)}%`;
+    overlayViewport.style.overflow = overlayScale > 1 ? 'auto' : 'hidden';
+    overlayViewport.classList.toggle('is-zoomed', overlayScale > 1);
+    overlayImage.style.cursor = overlayScale > 1 ? 'zoom-out' : 'zoom-in';
+  };
+
+  const stopPanning = () => {
+    if (!isPanning) {
+      return;
+    }
+
+    isPanning = false;
+    overlayViewport.classList.remove('is-panning');
+  };
+
+  const startPanning = event => {
+    if (overlayScale <= 1 || event.button !== 0) {
+      return;
+    }
+
+    isPanning = true;
+    panStartX = event.clientX;
+    panStartY = event.clientY;
+    panStartScrollLeft = overlayViewport.scrollLeft;
+    panStartScrollTop = overlayViewport.scrollTop;
+    overlayViewport.classList.add('is-panning');
+    event.preventDefault();
+  };
+
+  const movePanning = event => {
+    if (!isPanning) {
+      return;
+    }
+
+    const dx = event.clientX - panStartX;
+    const dy = event.clientY - panStartY;
+    overlayViewport.scrollLeft = panStartScrollLeft - dx;
+    overlayViewport.scrollTop = panStartScrollTop - dy;
+  };
+
+  const setOverlayScale = nextScale => {
+    overlayScale = nextScale;
+    updateOverlayScale();
+  };
+
+  const resetOverlayScale = () => {
+    setOverlayScale(1);
+  };
+
+  const zoomOverlayBy = delta => {
+    setOverlayScale(overlayScale + delta);
+  };
+
+  const updateOverlayImage = () => {
+    const total = photoUrls.length;
+    if (total === 0) {
+      return;
+    }
+
+    activePhotoIndex = ((activePhotoIndex % total) + total) % total;
+    const currentUrl = photoUrls[activePhotoIndex];
+    overlayImage.src = currentUrl;
+    overlayImage.alt = `Expanded gallery image ${activePhotoIndex + 1}`;
+    overlayCounter.textContent = `${activePhotoIndex + 1} / ${total}`;
+    resetOverlayScale();
+  };
+
+  const closeOverlay = () => {
+    stopPanning();
+    overlay.setAttribute('hidden', '');
+    document.body.classList.remove('gallery-overlay-open');
+  };
+
+  const openOverlayAt = index => {
+    activePhotoIndex = index;
+    updateOverlayImage();
+    overlay.removeAttribute('hidden');
+    document.body.classList.add('gallery-overlay-open');
+  };
+
+  const stepOverlay = delta => {
+    activePhotoIndex += delta;
+    updateOverlayImage();
+  };
+
+  closeButton.addEventListener('click', closeOverlay);
+  prevButton.addEventListener('click', () => stepOverlay(-1));
+  nextButton.addEventListener('click', () => stepOverlay(1));
+  zoomOutButton.addEventListener('click', () => zoomOverlayBy(-overlayScaleStep));
+  zoomInButton.addEventListener('click', () => zoomOverlayBy(overlayScaleStep));
+  zoomResetButton.addEventListener('click', resetOverlayScale);
+
+  overlayImage.addEventListener('dblclick', () => {
+    if (overlayScale > 1) {
+      resetOverlayScale();
+    } else {
+      setOverlayScale(2);
+    }
+  });
+
+  overlay.addEventListener('click', event => {
+    if (event.target === overlay) {
+      closeOverlay();
+    }
+  });
+
+  overlayViewport.addEventListener('mousedown', startPanning);
+  window.addEventListener('mousemove', movePanning);
+  window.addEventListener('mouseup', stopPanning);
+
+  overlay.addEventListener(
+    'wheel',
+    event => {
+      event.preventDefault();
+
+      if (event.ctrlKey) {
+        zoomOverlayBy(event.deltaY > 0 ? -overlayScaleStep : overlayScaleStep);
+        return;
+      }
+
+      if (wheelLocked) {
+        return;
+      }
+
+      wheelLocked = true;
+      stepOverlay(event.deltaY > 0 ? 1 : -1);
+
+      window.setTimeout(() => {
+        wheelLocked = false;
+      }, 180);
+    },
+    { passive: false }
+  );
+
+  document.addEventListener('keydown', event => {
+    if (overlay.hasAttribute('hidden')) {
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      closeOverlay();
+      return;
+    }
+
+    if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+      event.preventDefault();
+      stepOverlay(1);
+    }
+
+    if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+      event.preventDefault();
+      stepOverlay(-1);
+    }
+
+    if (event.key === '+' || event.key === '=') {
+      event.preventDefault();
+      zoomOverlayBy(overlayScaleStep);
+    }
+
+    if (event.key === '-' || event.key === '_') {
+      event.preventDefault();
+      zoomOverlayBy(-overlayScaleStep);
+    }
+
+    if (event.key === '0') {
+      event.preventDefault();
+      resetOverlayScale();
+    }
+  });
+
+  galleryGrid.innerHTML = '';
+  filenames.forEach((filename, index) => {
+    const figure = document.createElement('figure');
+    const image = document.createElement('img');
+    const fullImageUrl = buildPhotoUrl(filename);
+    image.src = fullImageUrl;
+    image.alt = `Gallery photo ${index + 1}`;
+    image.loading = 'lazy';
+
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'gallery-tile-button';
+    trigger.setAttribute('aria-label', `Open image ${index + 1} in viewer`);
+    trigger.appendChild(image);
+
+    trigger.addEventListener('click', () => {
+      openOverlayAt(index);
+    });
+
+    figure.appendChild(trigger);
+    galleryGrid.appendChild(figure);
+  });
+};
+
+initHobbiesExperience();
+initPhotoGalleryPage();
 

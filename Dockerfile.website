@@ -1,0 +1,10 @@
+FROM nginx:1.27-alpine
+
+COPY nginx-website.conf /etc/nginx/conf.d/default.conf
+COPY . /usr/share/nginx/html
+
+# Keep the image focused on static website assets.
+RUN rm -rf /usr/share/nginx/html/.git \
+    /usr/share/nginx/html/.venv \
+    /usr/share/nginx/html/frontend \
+    /usr/share/nginx/html/main_code

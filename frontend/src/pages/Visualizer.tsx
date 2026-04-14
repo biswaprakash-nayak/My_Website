@@ -8,6 +8,8 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Billboard, OrbitControls, Stars, Text } from "@react-three/drei";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import * as THREE from "three";
+import initSqlJs, { type QueryExecResult } from "sql.js";
+import sqlWasmUrl from "sql.js/dist/sql-wasm.wasm?url";
 
 interface StarSystem {
   star_name: string;
@@ -54,8 +56,8 @@ interface StarDetails {
 
 type CameraPreset = "cinematic" | "tactical" | "close" | "free";
 
-// Visual-only mode avoids backend calls and boots directly with local demo data.
-const VISUALS_ONLY_MODE = true;
+const STARS_CACHE_DB_PATH = "/stars_cache.db";
+const ENABLE_REMOTE_STAR_DETAILS = false;
 
 const PLANET_COLORS = [
   "#22c55e",
@@ -153,6 +155,168 @@ const SOLAR_DEMO_STAR_DETAILS: StarDetails = {
 const SOLAR_DEMO_SYSTEM: StarSystem = {
   star_name: SOLAR_DEMO_STAR_NAME,
   predictions: SOLAR_DEMO_PREDICTIONS,
+};
+
+const rowObjectsFromQuery = (result: QueryExecResult | undefined): Record<string, unknown>[] => {
+  if (!result || !result.columns || !result.values) {
+    return [];
+  }
+
+  return result.values.map((valueRow) => {
+    const rowObject: Record<string, unknown> = {};
+    result.columns.forEach((column, index) => {
+      rowObject[column] = valueRow[index];
+    });
+    return rowObject;
+  });
+};
+
+const toFiniteNumber = (value: unknown): number | null => {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === "string") {
+    const numeric = Number(value);
+    return Number.isFinite(numeric) ? numeric : null;
+  }
+  return null;
+};
+
+const parseJson = (value: unknown): unknown => {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    return null;
+  }
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+};
+
+const parseFoldedLightcurve = (value: unknown): number[] | null => {
+  const parsed = parseJson(value);
+  if (!Array.isArray(parsed)) {
+    return null;
+  }
+  const numbers = parsed
+    .map((item) => toFiniteNumber(item))
+    .filter((item): item is number => item != null);
+  return numbers.length > 0 ? numbers : null;
+};
+
+const buildPredictionFromDbRow = (row: Record<string, unknown>): PredictionItem => {
+  const bestCandidate = parseJson(row.best_candidate);
+  const candidateObject = bestCandidate && typeof bestCandidate === "object"
+    ? (bestCandidate as Record<string, unknown>)
+    : {};
+
+  const score = toFiniteNumber(row.best_score) ?? 0;
+  const mission = typeof row.mission === "string" ? row.mission : "Unknown";
+  const targetName = typeof row.target_name === "string" ? row.target_name : "Unknown Star";
+  const verdict = typeof row.verdict === "string" ? row.verdict : (score >= 0.5 ? "TRANSIT_DETECTED" : "NO_TRANSIT");
+
+  return {
+    id: toFiniteNumber(row.id) ?? Date.now(),
+    star_name: targetName,
+    mission,
+    score,
+    percentage: score * 100,
+    period_days: toFiniteNumber(candidateObject.period),
+    planet_radius_earth: null,
+    semi_major_axis_au: null,
+    transit_depth_estimate: toFiniteNumber(candidateObject.depth),
+    verdict,
+    timestamp: typeof row.created_at === "string" ? row.created_at : new Date().toISOString(),
+    folded_lightcurve: parseFoldedLightcurve(row.folded_lightcurve),
+  };
+};
+
+const groupPredictionsByStar = (predictions: PredictionItem[]): StarSystem[] => {
+  const grouped = new Map<string, PredictionItem[]>();
+
+  predictions.forEach((prediction) => {
+    const existing = grouped.get(prediction.star_name);
+    if (existing) {
+      existing.push(prediction);
+    } else {
+      grouped.set(prediction.star_name, [prediction]);
+    }
+  });
+
+  return Array.from(grouped.entries()).map(([starName, preds]) => ({
+    star_name: starName,
+    predictions: [...preds].sort((a, b) => {
+      const pa = a.period_days ?? Number.POSITIVE_INFINITY;
+      const pb = b.period_days ?? Number.POSITIVE_INFINITY;
+      return pa - pb;
+    }),
+  }));
+};
+
+const loadFromLocalStarsCache = async () => {
+  const SQL = await initSqlJs({ locateFile: () => sqlWasmUrl });
+  const response = await fetch(STARS_CACHE_DB_PATH, { cache: "no-store" });
+
+  if (!response.ok) {
+    throw new Error(`Unable to fetch ${STARS_CACHE_DB_PATH} (${response.status})`);
+  }
+
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  const db = new SQL.Database(bytes);
+
+  try {
+    const predictionResult = db.exec(`
+      SELECT id, target_name, mission, best_score, verdict, best_candidate, folded_lightcurve, created_at
+      FROM star_predictions
+      ORDER BY datetime(created_at) DESC
+      LIMIT 800
+    `);
+    const predictionRows = rowObjectsFromQuery(predictionResult[0]);
+    const predictions = predictionRows.map(buildPredictionFromDbRow);
+
+    const detailsResult = db.exec(`
+      SELECT star_name, payload_json
+      FROM star_details_cache
+    `);
+    const detailRows = rowObjectsFromQuery(detailsResult[0]);
+    const detailsCache: Record<string, StarDetails> = { [SOLAR_DEMO_STAR_NAME]: SOLAR_DEMO_STAR_DETAILS };
+
+    detailRows.forEach((row) => {
+      if (typeof row.star_name !== "string") {
+        return;
+      }
+
+      const payload = parseJson(row.payload_json);
+      if (!payload || typeof payload !== "object") {
+        return;
+      }
+
+      const detail = payload as Record<string, unknown>;
+      detailsCache[row.star_name] = {
+        star_name: row.star_name,
+        source: typeof detail.source === "string" ? detail.source : "Local cache",
+        ra: toFiniteNumber(detail.ra),
+        dec: toFiniteNumber(detail.dec),
+        gaia_id: detail.gaia_id == null ? null : String(detail.gaia_id),
+        tic_id: detail.tic_id == null ? null : String(detail.tic_id),
+        teff: toFiniteNumber(detail.teff),
+        radius: toFiniteNumber(detail.radius),
+        mass: toFiniteNumber(detail.mass),
+        logg: toFiniteNumber(detail.logg),
+        distance: toFiniteNumber(detail.distance),
+        vmag: toFiniteNumber(detail.vmag),
+        tmag: toFiniteNumber(detail.tmag),
+        found: Boolean(detail.found ?? true),
+      };
+    });
+
+    return {
+      systems: groupPredictionsByStar(predictions),
+      detailsCache,
+    };
+  } finally {
+    db.close();
+  }
 };
 
 const clamp = (value: number, minValue: number, maxValue: number) =>
@@ -708,56 +872,50 @@ const Visualizer = () => {
         : new THREE.Vector3(0, 2.2, 4.6);
 
   useEffect(() => {
-    if (VISUALS_ONLY_MODE) {
-      setStarSystems([SOLAR_DEMO_SYSTEM]);
-      setSelectedStarIdx(0);
-      setSelectedPlanetIdx(0);
-      setLoading(false);
-      setError(null);
-      return;
-    }
+    let cancelled = false;
 
-    const fetchHistory = async () => {
+    const loadFromCacheDb = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:8000/api/history?limit=200&sort=timestamp&order=desc");
-        if (!response.ok) throw new Error("Failed to fetch history");
-        const data: HistoryResponse = await response.json();
-        
-        // Group predictions by star_name
-        const grouped: { [key: string]: PredictionItem[] } = {};
-        data.items.forEach((pred) => {
-          if (!grouped[pred.star_name]) {
-            grouped[pred.star_name] = [];
-          }
-          grouped[pred.star_name].push(pred);
-        });
-        
-        const systems: StarSystem[] = Object.entries(grouped).map(([name, preds]) => {
-          // Keep planets ordered from closest to farthest by orbital period.
-          const sortedPredictions = [...preds].sort((a, b) => {
-            const pa = a.period_days ?? Number.POSITIVE_INFINITY;
-            const pb = b.period_days ?? Number.POSITIVE_INFINITY;
-            return pa - pb;
-          });
+        setError(null);
 
-          return {
-            star_name: name,
-            predictions: sortedPredictions,
-          };
-        });
-        
-        const withoutSolarDemo = systems.filter((sys) => sys.star_name.toLowerCase() !== SOLAR_DEMO_STAR_NAME);
+        const localDbData = await loadFromLocalStarsCache();
+        if (cancelled) {
+          return;
+        }
+
+        const withoutSolarDemo = localDbData.systems.filter((sys) => sys.star_name.toLowerCase() !== SOLAR_DEMO_STAR_NAME);
         setStarSystems([SOLAR_DEMO_SYSTEM, ...withoutSolarDemo]);
+        setStarDetailsCache(localDbData.detailsCache);
+        setSelectedStarIdx(0);
+        setSelectedPlanetIdx(0);
         setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error");
-        console.error("Error fetching history:", err);
+        if (cancelled) {
+          return;
+        }
+
+        setStarSystems([SOLAR_DEMO_SYSTEM]);
+        setSelectedStarIdx(0);
+        setSelectedPlanetIdx(0);
+        setError(
+          err instanceof Error
+            ? `Using demo data. Could not load stars_cache.db: ${err.message}`
+            : "Using demo data. Could not load stars_cache.db.",
+        );
+        console.error("Error loading local cache DB:", err);
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
-    fetchHistory();
+
+    loadFromCacheDb();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -818,7 +976,7 @@ const Visualizer = () => {
   );
 
   useEffect(() => {
-    if (VISUALS_ONLY_MODE) {
+    if (!ENABLE_REMOTE_STAR_DETAILS) {
       return;
     }
 

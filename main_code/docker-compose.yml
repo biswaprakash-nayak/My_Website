@@ -1,0 +1,13 @@
+services:
+  cosmikai-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cosmikai-maincode-api
+    environment:
+      COSMIKAI_DB_PATH: /data/stars_cache.db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./stars_cache.db:/data/stars_cache.db
+    restart: unless-stopped

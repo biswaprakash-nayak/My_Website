@@ -1,0 +1,18 @@
+services:
+  website:
+    build:
+      context: .
+      dockerfile: Dockerfile.website
+    container_name: biswa-website
+    ports:
+      - "9900:80"
+    restart: unless-stopped
+
+  visualizer:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: biswa-visualizer
+    ports:
+      - "9901:80"
+    restart: unless-stopped

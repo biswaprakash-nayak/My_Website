@@ -34,6 +34,8 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
+import initSqlJs, { type QueryExecResult } from "sql.js";
+import sqlWasmUrl from "sql.js/dist/sql-wasm.wasm?url";
 
 interface HistoryItem {
   id: number;
@@ -133,8 +135,133 @@ const fallbackFluxSignalData = [
 const API_BASE_STORAGE_KEY = "cosmikai_api_base_url";
 const TELEMETRY_REFRESH_MS = 30_000;
 const FLUX_PREVIEW_ROTATE_MS = 8_000;
+const STARS_CACHE_DB_PATH = "/stars_cache.db";
 
 const normalizeApiBase = (value: string) => value.trim().replace(/\/+$/, "");
+
+const rowObjectsFromQuery = (result: QueryExecResult | undefined): Record<string, unknown>[] => {
+  if (!result || !result.columns || !result.values) {
+    return [];
+  }
+
+  return result.values.map((valueRow) => {
+    const rowObject: Record<string, unknown> = {};
+    result.columns.forEach((column, index) => {
+      rowObject[column] = valueRow[index];
+    });
+    return rowObject;
+  });
+};
+
+const toFiniteNumber = (value: unknown): number | null => {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === "string") {
+    const numeric = Number(value);
+    return Number.isFinite(numeric) ? numeric : null;
+  }
+  return null;
+};
+
+const parseJson = (value: unknown): unknown => {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    return null;
+  }
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+};
+
+const parseFoldedLightcurve = (value: unknown): number[] | null => {
+  const parsed = parseJson(value);
+  if (!Array.isArray(parsed)) {
+    return null;
+  }
+
+  const numbers = parsed
+    .map((item) => toFiniteNumber(item))
+    .filter((item): item is number => item != null);
+
+  return numbers.length > 0 ? numbers : null;
+};
+
+const mapHistoryFromDbRow = (row: Record<string, unknown>): HistoryItem => {
+  const candidateJson = parseJson(row.best_candidate);
+  const candidate = candidateJson && typeof candidateJson === "object"
+    ? (candidateJson as Record<string, unknown>)
+    : {};
+  const score = toFiniteNumber(row.best_score) ?? 0;
+
+  return {
+    id: toFiniteNumber(row.id) ?? Date.now(),
+    star_name: typeof row.target_name === "string" ? row.target_name : "Unknown Star",
+    mission: typeof row.mission === "string" ? row.mission : "Unknown",
+    score,
+    percentage: score * 100,
+    period_days: toFiniteNumber(candidate.period),
+    transit_depth_estimate: toFiniteNumber(candidate.depth),
+    verdict: typeof row.verdict === "string" ? row.verdict : (score >= 0.5 ? "TRANSIT_DETECTED" : "NO_TRANSIT"),
+    timestamp: typeof row.created_at === "string" ? row.created_at : new Date().toISOString(),
+    folded_lightcurve: parseFoldedLightcurve(row.folded_lightcurve),
+  };
+};
+
+const loadLocalTelemetryFromDb = async () => {
+  const SQL = await initSqlJs({ locateFile: () => sqlWasmUrl });
+  const response = await fetch(STARS_CACHE_DB_PATH, { cache: "no-store" });
+
+  if (!response.ok) {
+    throw new Error(`Unable to fetch ${STARS_CACHE_DB_PATH} (${response.status})`);
+  }
+
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  const db = new SQL.Database(bytes);
+
+  try {
+    const historyResult = db.exec(`
+      SELECT id, target_name, mission, best_score, verdict, best_candidate, folded_lightcurve, created_at
+      FROM star_predictions
+      ORDER BY datetime(created_at) DESC
+      LIMIT 500
+    `);
+    const historyRows = rowObjectsFromQuery(historyResult[0]);
+    const historyItems = historyRows.map(mapHistoryFromDbRow);
+    const historyTotal = historyItems.length;
+
+    const totalScore = historyItems.reduce((sum, item) => sum + item.score, 0);
+    const aboveThreshold = historyItems.filter((item) => item.score >= 0.5).length;
+    const missions = historyItems.reduce<Record<string, number>>((acc, item) => {
+      const key = item.mission || "Unknown";
+      acc[key] = (acc[key] ?? 0) + 1;
+      return acc;
+    }, {});
+
+    const stats: StatsResponse = {
+      total_analyzed: historyTotal,
+      average_score: historyTotal > 0 ? totalScore / historyTotal : 0,
+      detection_rate: historyTotal > 0 ? aboveThreshold / historyTotal : 0,
+      missions,
+      above_threshold: aboveThreshold,
+      below_threshold: Math.max(0, historyTotal - aboveThreshold),
+    };
+
+    const health: HealthResponse = {
+      status: "cache-only",
+      model_loaded: false,
+      model_version: "cache-only",
+      model_auprc: 0,
+      total_predictions: historyTotal,
+      uptime_seconds: 0,
+    };
+
+    return { historyItems, historyTotal, stats, health };
+  } finally {
+    db.close();
+  }
+};
 
 const Index = () => {
   const navigate = useNavigate();
@@ -185,6 +312,10 @@ const Index = () => {
       if (showLoading) setLoading(true);
 
       try {
+        let historyLoadedFromApi = false;
+        let healthLoadedFromApi = false;
+        let statsLoadedFromApi = false;
+
         const [historyRes, healthRes, statsRes] = await Promise.allSettled([
           fetch(`${apiBaseUrl}/api/history?limit=120&offset=0`, { signal: controller.signal }),
           fetch(`${apiBaseUrl}/api/health`, { signal: controller.signal }),
@@ -195,16 +326,39 @@ const Index = () => {
           const historyJson = (await historyRes.value.json()) as HistoryResponse;
           setHistoryItems(historyJson.items ?? []);
           setHistoryTotal(historyJson.total ?? 0);
+          historyLoadedFromApi = true;
         }
 
         if (!disposed && healthRes.status === "fulfilled" && healthRes.value.ok) {
           const healthJson = (await healthRes.value.json()) as HealthResponse;
           setHealth(healthJson);
+          healthLoadedFromApi = true;
         }
 
         if (!disposed && statsRes.status === "fulfilled" && statsRes.value.ok) {
           const statsJson = (await statsRes.value.json()) as StatsResponse;
           setStatsData(statsJson);
+          statsLoadedFromApi = true;
+        }
+
+        if (!historyLoadedFromApi || !healthLoadedFromApi || !statsLoadedFromApi) {
+          try {
+            const localTelemetry = await loadLocalTelemetryFromDb();
+            if (!disposed) {
+              if (!historyLoadedFromApi) {
+                setHistoryItems(localTelemetry.historyItems);
+                setHistoryTotal(localTelemetry.historyTotal);
+              }
+              if (!healthLoadedFromApi) {
+                setHealth(localTelemetry.health);
+              }
+              if (!statsLoadedFromApi) {
+                setStatsData(localTelemetry.stats);
+              }
+            }
+          } catch (localDbError) {
+            console.error("Local stars_cache.db fallback failed:", localDbError);
+          }
         }
       } catch (err) {
         console.error("Homepage telemetry fetch failed:", err);

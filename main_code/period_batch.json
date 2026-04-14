@@ -1,0 +1,62 @@
+[
+  {
+    "star": "Kepler-1",
+    "mission": "Kepler",
+    "periods": [2.470613]
+  },
+  {
+    "star": "Kepler-2",
+    "mission": "Kepler",
+    "periods": [2.204735]
+  },
+  {
+    "star": "Kepler-3",
+    "mission": "Kepler",
+    "periods": [4.887803]
+  },
+  {
+    "star": "Kepler-4",
+    "mission": "Kepler",
+    "periods": [3.213457]
+  },
+  {
+    "star": "Kepler-5",
+    "mission": "Kepler",
+    "periods": [3.548460]
+  },
+  {
+    "star": "Kepler-6",
+    "mission": "Kepler",
+    "periods": [3.234723]
+  },
+  {
+    "star": "Kepler-7",
+    "mission": "Kepler",
+    "periods": [4.885489]
+  },
+  {
+    "star": "Kepler-8",
+    "mission": "Kepler",
+    "periods": [3.522500]
+  },
+  {
+    "star": "Kepler-9",
+    "mission": "Kepler",
+    "periods": [1.5929, 19.243, 38.910]
+  },
+  {
+    "star": "TOI-700",
+    "mission": "TESS",
+    "periods": [9.977, 16.051, 37.426]
+  },
+  {
+    "star": "WASP-33",
+    "mission": "TESS",
+    "periods": [1.21987]
+  },
+  {
+    "star": "Kepler-10",
+    "mission": "Kepler",
+    "periods": [0.83749, 45.294]
+  }
+]
