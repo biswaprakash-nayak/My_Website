@@ -1059,7 +1059,39 @@ h4 {
 }
 
 .cosmik-brief .qa-list {
-  margin-top: 14px;
+  margin-top: 6px;
+}
+
+.cosmik-brief .showcase-text-block {
+  margin-top: 8px;
+}
+
+.cosmik-git-wrap {
+  margin-top: 12px;
+}
+
+.cosmik-git-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 3px 10px;
+  border: 1px solid rgba(90, 112, 89, 0.58);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--accent-3);
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.52rem;
+  font-weight: 700;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.cosmik-git-btn:hover {
+  color: #fff;
+  background: rgba(90, 112, 89, 0.92);
+  border-color: rgba(90, 112, 89, 0.92);
 }
 
 .cosmik-orbit-canvas {

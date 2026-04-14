@@ -11,6 +11,10 @@ import Visualizer from "./pages/Visualizer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+const routerBasename =
+  typeof window !== "undefined" && window.location.pathname.startsWith("/cosmik")
+    ? "/cosmik"
+    : "/";
 
 const pageVariants = {
   initial: { opacity: 0 },
@@ -84,7 +88,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename={routerBasename}>
         <PortfolioReturnButton />
         <AnimatedRoutes />
       </BrowserRouter>

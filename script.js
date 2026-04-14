@@ -86,7 +86,7 @@ if (openCosmikProjectLink) {
   openCosmikProjectLink.addEventListener('click', event => {
     event.preventDefault();
     const portfolioReturn = encodeURIComponent(window.location.href);
-    window.location.href = `http://127.0.0.1:9901/?portfolioReturn=${portfolioReturn}`;
+    window.location.href = `http://127.0.0.1:9900/cosmik/?portfolioReturn=${portfolioReturn}`;
   });
 }
 
