@@ -281,3 +281,154 @@ if (reportViewers.length > 0 && window.pdfjsLib) {
 window.addEventListener('load', () => {
   syncReportViewerHeights();
 });
+
+const cosmikScenes = document.querySelectorAll('[data-cosmik-scene]');
+
+if (cosmikScenes.length > 0) {
+  cosmikScenes.forEach(scene => {
+    const canvas = scene.querySelector('[data-cosmik-canvas]');
+    const sceneMode = scene.getAttribute('data-cosmik-mode') || 'card';
+    const isImmersive = sceneMode === 'immersive';
+
+    if (!(canvas instanceof HTMLCanvasElement)) {
+      return;
+    }
+
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+      return;
+    }
+
+    const stars = Array.from({ length: isImmersive ? 320 : 180 }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 1.8 + 0.3,
+      a: Math.random() * 0.45 + 0.25,
+      drift: (Math.random() - 0.5) * (isImmersive ? 0.0002 : 0.00012)
+    }));
+
+    const planets = [
+      { orbit: 0.16, radius: 4, color: '#9d9386', speed: 0.0009, phase: Math.random() * Math.PI * 2 },
+      { orbit: 0.24, radius: 6, color: '#d5a774', speed: 0.00072, phase: Math.random() * Math.PI * 2 },
+      { orbit: 0.32, radius: 6.5, color: '#4f8ddf', speed: 0.00058, phase: Math.random() * Math.PI * 2 },
+      { orbit: 0.41, radius: 5.2, color: '#b9653f', speed: 0.00048, phase: Math.random() * Math.PI * 2 },
+      { orbit: 0.52, radius: 11, color: '#d0b28a', speed: 0.00031, phase: Math.random() * Math.PI * 2 },
+      { orbit: 0.64, radius: 9.2, color: '#d5c39c', speed: 0.00024, phase: Math.random() * Math.PI * 2, ring: true },
+      { orbit: 0.75, radius: 7.6, color: '#5b8fff', speed: 0.00019, phase: Math.random() * Math.PI * 2 },
+      { orbit: 0.86, radius: 7.4, color: '#4a76d3', speed: 0.00015, phase: Math.random() * Math.PI * 2 }
+    ];
+
+    let width = 0;
+    let height = 0;
+    let pixelRatio = 1;
+    let animationFrameId = 0;
+    let lastTime = 0;
+
+    const resize = () => {
+      width = Math.max(scene.clientWidth, 1);
+      height = Math.max(scene.clientHeight, 1);
+      pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(width * pixelRatio);
+      canvas.height = Math.floor(height * pixelRatio);
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    };
+
+    const draw = time => {
+      const dt = lastTime === 0 ? 16 : Math.min(time - lastTime, 40);
+      lastTime = time;
+
+      const cx = width * (isImmersive ? 0.66 : 0.52);
+      const cy = height * (isImmersive ? 0.53 : 0.52);
+      const minDim = Math.min(width, height);
+
+      context.clearRect(0, 0, width, height);
+
+      const bg = context.createRadialGradient(cx, cy, minDim * 0.06, cx, cy, minDim * (isImmersive ? 0.95 : 0.75));
+      bg.addColorStop(0, 'rgba(231, 147, 45, 0.22)');
+      bg.addColorStop(0.45, 'rgba(27, 23, 32, 0.9)');
+      bg.addColorStop(1, 'rgba(8, 12, 20, 1)');
+      context.fillStyle = bg;
+      context.fillRect(0, 0, width, height);
+
+      stars.forEach(star => {
+        star.y += star.drift * dt;
+        if (star.y > 1.02) {
+          star.y = -0.02;
+        }
+        if (star.y < -0.02) {
+          star.y = 1.02;
+        }
+
+        context.beginPath();
+        context.fillStyle = `rgba(255, 211, 130, ${star.a})`;
+        context.arc(star.x * width, star.y * height, star.r, 0, Math.PI * 2);
+        context.fill();
+      });
+
+      planets.forEach((planet, index) => {
+        const ringRadius = minDim * planet.orbit;
+        context.beginPath();
+        context.strokeStyle = index % 2 === 0 ? 'rgba(160, 170, 190, 0.16)' : 'rgba(210, 180, 130, 0.14)';
+        context.lineWidth = 1;
+        context.ellipse(cx, cy, ringRadius, ringRadius * (isImmersive ? 0.72 : 0.78), 0, 0, Math.PI * 2);
+        context.stroke();
+      });
+
+      const core = context.createRadialGradient(cx, cy, minDim * 0.005, cx, cy, minDim * 0.06);
+      core.addColorStop(0, 'rgba(255, 245, 223, 0.98)');
+      core.addColorStop(0.55, 'rgba(250, 187, 90, 0.92)');
+      core.addColorStop(1, 'rgba(214, 114, 30, 0.16)');
+      context.fillStyle = core;
+      context.beginPath();
+      context.arc(cx, cy, minDim * 0.055, 0, Math.PI * 2);
+      context.fill();
+
+      planets.forEach(planet => {
+        planet.phase += planet.speed * dt;
+        const ringRadius = minDim * planet.orbit;
+        const px = cx + Math.cos(planet.phase) * ringRadius;
+        const py = cy + Math.sin(planet.phase) * ringRadius * (isImmersive ? 0.72 : 0.78);
+
+        if (planet.ring) {
+          context.save();
+          context.translate(px, py);
+          context.rotate(-0.34);
+          context.beginPath();
+          context.strokeStyle = 'rgba(211, 190, 140, 0.62)';
+          context.lineWidth = 1.7;
+          context.ellipse(0, 0, planet.radius * 1.95, planet.radius * 0.75, 0, 0, Math.PI * 2);
+          context.stroke();
+          context.restore();
+        }
+
+        const glow = context.createRadialGradient(px, py, planet.radius * 0.15, px, py, planet.radius * 2.2);
+        glow.addColorStop(0, 'rgba(255, 255, 255, 0.88)');
+        glow.addColorStop(0.45, `${planet.color}cc`);
+        glow.addColorStop(1, `${planet.color}10`);
+        context.fillStyle = glow;
+        context.beginPath();
+        context.arc(px, py, planet.radius * 2.2, 0, Math.PI * 2);
+        context.fill();
+
+        context.fillStyle = planet.color;
+        context.beginPath();
+        context.arc(px, py, planet.radius, 0, Math.PI * 2);
+        context.fill();
+      });
+
+      animationFrameId = window.requestAnimationFrame(draw);
+    };
+
+    resize();
+    animationFrameId = window.requestAnimationFrame(draw);
+
+    window.addEventListener('resize', resize);
+
+    scene.addEventListener('remove', () => {
+      window.cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', resize);
+    });
+  });
+}
+

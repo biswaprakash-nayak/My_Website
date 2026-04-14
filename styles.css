@@ -802,6 +802,14 @@ h4 {
   margin-top: 16px;
 }
 
+.pdf-showcase-panel .pdf-text-block {
+  margin-top: 10px;
+}
+
+.showcase-item-panel .presentation-viewer + .showcase-copy .showcase-text-block {
+  margin-top: 10px;
+}
+
 .pdf-text-block[hidden] {
   display: none !important;
 }
@@ -947,6 +955,64 @@ h4 {
   overflow: hidden;
   min-height: 280px;
   box-shadow: var(--shadow);
+}
+
+.cosmik-orbit-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: min(42vh, 420px);
+  background: radial-gradient(circle at 45% 45%, rgba(230, 146, 44, 0.24), rgba(10, 16, 26, 0.96) 58%);
+}
+
+.showcase-panel-cosmik .panel-inner {
+  width: min(1180px, 94vw);
+}
+
+.cosmik-experience {
+  position: relative;
+  min-height: min(74vh, 680px);
+  border: 1px solid rgba(160, 140, 100, 0.32);
+  box-shadow: 0 22px 58px rgba(42, 35, 24, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  overflow: hidden;
+}
+
+.cosmik-orbit-scene-immersive {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  background: radial-gradient(circle at 68% 44%, rgba(235, 160, 68, 0.28), rgba(13, 20, 34, 0.96) 56%);
+}
+
+.cosmik-brief {
+  position: absolute;
+  right: clamp(18px, 2.5vw, 30px);
+  top: clamp(18px, 2.5vw, 30px);
+  bottom: clamp(18px, 2.5vw, 30px);
+  width: min(440px, 42%);
+  padding: clamp(16px, 2vw, 24px);
+  background: linear-gradient(145deg, rgba(247, 241, 231, 0.96), rgba(235, 227, 212, 0.9));
+  border: 1px solid rgba(165, 146, 110, 0.44);
+  box-shadow: 0 12px 34px rgba(20, 18, 14, 0.22);
+  overflow-y: auto;
+}
+
+.cosmik-brief .qa-list {
+  margin-top: 14px;
+}
+
+.cosmik-orbit-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.cosmik-visualizer-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #0f131b;
 }
 
 .presentation-viewer {
@@ -1320,6 +1386,19 @@ h4 {
   .pdf-media-large {
     height: 320px;
     min-height: 320px;
+  }
+
+  .cosmik-experience {
+    min-height: 620px;
+  }
+
+  .cosmik-brief {
+    width: min(520px, calc(100% - 32px));
+    left: 16px;
+    right: 16px;
+    top: 16px;
+    bottom: auto;
+    max-height: min(52vh, 420px);
   }
 
   .scroll-hint {
