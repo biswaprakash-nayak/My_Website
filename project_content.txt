@@ -1,0 +1,212 @@
+1 Showcase
+
+ A)​ Video Interview (assignment 2)
+      a)​ What is it
+                 It is a mock virtual interview where you are given a question and you
+         record your answer on the platform and submit it. This is all done without any
+         external human input and only requires the interviewee to record themselves
+         when they are free before the deadline. Each question usually has a minute
+         or 2 thinking time and then a few minutes to actually record your video.
+
+
+      b)​ Explain why you selected this piece for your showcase?
+                  This is different from most other assignments and traditional forms of
+         communication. Usually we are talking to a person or text/emailing them
+         mainly on a one on one basis. You know who you are talking with. This is very
+         different as you can’t see who is actually looking at your video. This is very
+         disjointed and hence a unique experience in the new digital world. So due to
+         this I choose to include this piece for my showcase.
+
+
+      c)​ What does this piece say about your development as a
+          communicator?
+         ​        Majority of my experience has been talking to people directly but
+         never in this way. This is really weird as you have no human response to go
+         off of or anything. This may be similar to making an youtube video or
+         presenting on TV which may be useful in the future when making project
+         submission videos as well. I am really camera shy and find it difficult to talk to
+         the camera like that and this definitely gave me a new experience.
+
+
+      d)​ Did this piece push you out of your comfort zone?
+         I am not used to talking to a camera and am very camera shy. This was
+         definitely way out of my comfort zone.
+
+
+      e)​ Is this piece your best work? Why or why not?
+         I don’t have much experience with this and considering I have a camera
+         shyness, it was the best I could do at that moment of time. I am not sure if I
+         am any better but it would help getting more practice in this.
+
+
+
+ B)​ Term Project 1
+      a)​ What is it
+         A scientific research report on sustainable transportation.
+    b)​ Explain why you selected this piece for your showcase?
+               This is different from the usual essays and is a full on technical report
+       which would be my first time writing one and hence I am showing it. We also
+       had to do peer reviews which means we had to give advice to other people on
+       their reports while making sure it's actually useful
+
+
+    c)​ What does this piece say about your development as a
+        communicator?
+               Well now I am more used to writing a technical report with proper
+       citations compared to short paragraphs before. Also I had to make sure all the
+       points were understandable and all the paragraphs make sense together
+       which you don’t have to worry about as much in shorter pieces of writing.
+
+
+    d)​ Did this piece push you out of your comfort zone?
+       ​      Mostly not as it's similar to writing smaller paragraphs. The main hard
+       part was making sure everything is backed up with evidence and making sure
+       the overall paragraphs make sense.
+
+
+    e)​ Is this piece your best work? Why or why not?
+       ​         In the time I had I can say it is the best. I spent the last day or 2 before
+       it was due actually doing the assignment. If I started earlier I could have made
+       it a lot better but then I couldn’t have spent time on my other classes.
+
+
+C)​ Group Assignment 5
+    a)​ What is it
+       ​       We had to make a presentation based on our technical report (from
+       part B in this case)
+
+
+    b)​ Explain why you selected this piece for your showcase?
+       ​       This was the first and only major group work we had and not only a
+       quick tutorial activity. This makes it an actual communication assignment.
+
+
+    c)​ What does this piece say about your development as a
+        communicator?
+       ​      It was a breeze working with my team, which means my
+       communication is at a point where I can efficiently work with a random team
+       of people I don’t know.
+
+
+    d)​ Did this piece push you out of your comfort zone?
+       ​      Communicating with the team was not hard. Again we had to record
+       ourselves speaking to the camera and submit that video. We choose to do it
+        on our own time and put together the video. This was out of my comfort zone
+        as I am not used to talking to a camera without any human like in the
+        interview assignment.
+
+
+     e)​ Is this piece your best work? Why or why not?
+        ​       The slides were really good and the presentation was also decent. I
+        had to extend my section so I had to speak slower than usual which made it
+        really difficult for me as it was a lot slower than I am used to making me think
+        more and losing track often for which I needed to do multiple retakes. If I had
+        more time to practice and do more retakes then it would have been a lot
+        better but for the time I had, it was really good.
+
+
+D)​ Cosmik Ai.
+     a)​ What is it
+               An Ai exoplanet detector being developed for citizen science
+        applications to quickly find exoplanets in stars.
+
+
+     b)​ Explain why you selected this piece for your showcase?
+        ​        This is the largest project I have done to date, this started as a
+        hackathon project and turned into a many month project. We worked with a
+        professor and were a team of students who came up with this. This included
+        finding and talking to professors who would work with us and also make time
+        for it alongside our busy classes.
+
+
+     c)​ What does this piece say about your development as a
+         communicator?
+        ​       I was usually scared to approach new people, especially professors.
+        This forced me to talk to a few and find one who is interested in our work. We
+        also partnered with a capstone team and had to talk with them. I had to make
+        sure my teammates understood the technical requirements of their tasks and
+        were on the same page.
+
+
+     d)​ Did this piece push you out of your comfort zone?
+        ​       Yes this did push me out of my comfort zone the most. I had to find
+        and talk with a few professors which I was not used to doing and was also
+        afraid of doing. I also got used to talking to professors normally as I had to
+        email the professor often with questions, updates and so on. I also had to
+        work with the capstone team which were people I didn’t know but got to know
+        them better. I also managed my team, telling them their tasks and making
+        sure they delivered on time. This is the most hands-on I have been for a
+        project and gave me valuable insight.
+           e)​ Is this piece your best work? Why or why not?
+               ​       This is not fully complete as the Ai model requires more training. This
+               is a long term project but I have a current MVP up on my github. This is for
+               the time being my best work. I am not sure how I can improve it further other
+               than updating the Ai model. This takes time and is also not my field as I am
+               more of the backend integrator than the Ai developer.
+
+
+2 Reflection
+
+Part 1: ENG2003 Experience
+​        ENG2003 was different from other courses I have done as it was less technical and
+more on communication and relied on your English skills. I would say some activities were
+fun, especially the Kahoots while others felt like a chore and a waste of time. Most tutorials
+were not bad, the TA was really nice and talking to people and working on the activity was
+decently fun for most of the time. I found the term project 1, the technical report, to be a
+good project where we got the chance to research anything and make a report about it. It
+was fun researching about a topic you are really passionate about and making a report to
+help others see your passion and the information you are trying to convey. The group
+assignment where we had to present one of our reports was also quick and enjoyable.
+Working with a team of random people is not so difficult most of the time. One of the
+members was being a bit difficult but we resolved it and made, what I would say is a really
+good looking presentation. On the other side there were activities like the cover letter or
+some of the tutorial activities which seemed like a drag compared to the other activities and
+would say they could have been done better. The lecture activities are not so bad, I found a
+group near the beginning and stuck with them throughout the semester. So, working with my
+group for the inclass activities was really easy and enjoyable. The best part of the course
+was definitely the Kahoots, I learnt a lot from them as it was easy to retain important
+information through activities. Compared to lectures where it gets boring really fast and you
+start to zone out and miss all the information, these kahoot sessions were definitely a breath
+of fresh air. This course was a bit different from what I was expecting as I expected a dull
+lecture and many boring, and not so useful essay writings. This course had some aspects of
+what I had dreaded but overall it was still better than I expected and is really useful for
+people who cannot communicate, though the amount of such people may be really low. I
+would say the technical report, term project 1, was the most useful as I had never written a
+technical report before. THis gave me the experience of writing one and I learned a lot about
+writing a report and how to properly cite sources using IEEE from this. Otherwise, the other
+assignments were more or the same to what I have experienced before and would not say
+they truly changed something, for me at least. Overall I would say the experience was okay
+but did not stand out in any way. After completing the course I am not sure how much I
+would have really missed out on if I did not do the course.
+Part 2: ENG2003 Reflection
+​        I would say even before ENG2003, I had a strong basis for communication already.
+After the course, I don’t think I have really changed much in any sense. Most of the skills like
+working with others and writing essays/ paragraphs are mostly what I have been doing most
+of my life. If I were to miss out on this course then I would not really lose much, if anything.
+The 7Cs and the axioms of communications seemed like a beneficial thing but the more I
+thought about it, the more I came to the conclusion of why do we need it? Most of the points
+discussed were already common knowledge. Also when you go to “communicate”, you don’t
+think about the 7Cs. You go with what seems the best and usually it is good enough for the
+task. Making communication about strict rules removes nuance and abilities people would
+have learnt from just communicating. This is useful for someone new to english or someone
+who is introverted with little communication experience. Coming from my background with
+ample experience I would say nothing truly improved under this course. The only skill I would
+say I am lacking is talking to a camera like the virtual interview. Though I am not sure how
+useful this skill is as most often you will be talking to a human and this seems close to
+dystopian more than anything. I also have a habit of rambling on and being less concise but I
+don’t think every piece of writing needs to be super concise. If all writing was concise then
+there would be no humanity in them, might as well use Ai to talk to each other. On top of
+that, I can be concise accordingly like in my technical report or quick communications
+between people. I already have a strong basis for technical communications coming from
+many hackathons or working with professors. I also have pitching and public speaking
+experience to draw from when it comes to tailoring the information for the crowd. So, in that
+sense I wouldn’t say anything changed when it comes to approaching other courses
+differently. Most likely I will forget the 7Cs or the axioms but still remember the overall idea of
+how to communicate from the experience I have had.
+
+
+Portfolio
+
+Cosmikai Photography Server Administration LES Benny
+Travelling and Eating
+

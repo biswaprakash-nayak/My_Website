@@ -1,0 +1,263 @@
+               ENG 2003 - Effective Engineering Communication
+   Term Project 02 - Communication Portfolio (20% of final grade)
+                               Due: April 13th, 2026 (11:59pm)
+Summary: For Term Project 2, you will create a communication portfolio. This document (1) identifies
+the associated learning outcome; (2) offers guidelines and instructions for each section of the portfolio;
+(3) provides an overview of how the project will be assessed including a rubric; and (4) suggests
+platforms you can use to create your portfolio, along with resources you may find helpful when
+completing your portfolio.
+
+
+1. Learning Outcome: Analyze and identify your own communication skills as an engineer, identifying
+gaps and opportunities for improvement (CLO7).
+
+2. Guidelines/Instructions: This semester, you have been asked to complete a variety of activities,
+exercises, and assignments in this course. This is your opportunity to showcase and reflect on your best
+work, and to identify the communication skills you developed along the way. Your portfolio should be a
+stand-alone record that can be understood by someone other than your classmates, TAs, or
+instructors.
+
+Your portfolio can be either publicly available (website) or can be privately but with access (e.g.
+password) provided to the instructional team as part of your submission. You should ensure that the
+instructional team can access it at least until May 31st, 2026, if not longer. You may use any platform
+of your choosing to build and host your portfolio - some platform suggestions have been provided
+below). Submit your completed portfolio by 11:59pm, April 13, 2026, via the Term Project 02 page on
+eClass.
+In short, your portfolio should
+    i. showcase your work;
+   ii. reflect on your development as a communicator;
+  iii. be linked to a LinkedIn profile;
+  iv. be uniquely tailored to you; and
+   v. make a positive, professional impression.
+
+i. Showcase: Select four (4) items which, in your opinion, best reflect your skills and your development
+as an effective communicator. Three (3) items must be from ENG2003, and one (1) must be a
+communications-related work from another course or activity (e.g. hackathon, conference etc). All
+showcased work should have been completed during the current academic year (i.e., 2023-2024).
+   For each item in your showcase, you should address the following:
+       ▪ Explain why you selected this piece for your showcase
+       ▪ What does this piece say about your development as a communicator?
+       ▪ Did this piece push you out of your comfort zone?
+
+ENG 2003 Effective Engineering Communication                                                   Page 1 of 6
+       ▪   Is this piece your best work? Why or why not?
+
+NOTE: If you are not comfortable with sharing the actual showcase(s) as downloadable attachments,
+                then you may wish to post samples or section of it as images instead.
+
+ii. Reflection: By drawing on the Axioms of Communication, the 7 C’s, and the resources provided
+below, reflect on your experiences in the course as well as your development as a communicator. Your
+reflection should demonstrate reflective thought and inquiry, in addition to providing examples from,
+and making connections to your personal experiences. This section should consist of two parts: (I)
+reflections on your experiences in ENG2003; and (II) reflections on your growth and development as an
+effective communicator. In total, this section should be between 500 and 1,000 words in length.
+   Here are some questions to consider when reflecting on your experiences in ENG2003 (remember
+   to provide examples):
+       ▪ How would you describe your overall experience in ENG2003?
+       ▪ Was the course what you expected it to be? Why or why not?
+       ▪ Which course content did you find the most useful and why?
+       ▪ Which topic(s) did you find the most interesting and why?
+   Here are some questions to consider when reflecting on your development as a communicator
+   (remember to provide examples):
+      ▪ How would you describe your communication abilities before ENG2003? What about now?
+      ▪ Which communication skills (e.g., presentations, report writing, etc.) did you improve the
+          most?
+      ▪ Which communication skills do you still need to work on?
+      ▪ How will your experience in this course change the way you approach other engineering
+          courses? What about engineering practice?
+
+iii. LinkedIn: By drawing on the course content concerning cover letters and resumes, and using the
+LinkedIn Profile Checklist (available on eClass), create a LinkedIn profile (or update your existing profile
+using the guidelines outlined below). Ensure that your LinkedIn profile is prominently linked in your
+portfolio, and that your LinkedIn profile includes a link to your portfolio. To receive marks for your
+profile, it must be visible to the public (consult the tutorial available on eClass if you’re not sure how
+to do this).
+   At minimum, your LinkedIn profile should include the following:
+      ▪ A descriptive headline (e.g., “Third-Year Mechanical Engineering Student”);
+      ▪ A clear, concise summary (don’t forget the 7 C’s);
+      ▪ Under education: provide details about your undergraduate program; and
+      ▪ Under skills & experience: list at least five skills.
+
+iv. Uniquely Tailored: Your portfolio should be uniquely tailored to you as both an emerging
+professional engineer and as a person. Consider including select hobbies or extracurricular activities,
+and explain how these activities allowed you to develop transferable skills. Crucially, you should use
+your judgement to balance personalization on the one hand, and professionalism on the other.
+
+
+
+ENG 2003 Effective Engineering Communication                                                      Page 2 of 6
+   This section should include at least one interesting passion-project you worked on, whether in your
+   spare time or in another course. Some examples include:
+       ▪ Photograph of a prototype you are working on;
+       ▪ Screenshot of an interface;
+       ▪ Description or picture of a design project; and
+       ▪ Description of (and link to) code on github, or your models/drawings on CAD.
+
+v. Positive, Professional Impression: Your portfolio should make a positive impression on the reader
+without sacrificing professionalism. Consider, for instance, whether your hobbies or extracurriculars
+are appropriate for a professional portfolio.
+  You should make an effort to account for the 7 C’s throughout your portfolio. For example:
+       ▪ Have you been clear and concise without sacrificing completeness?
+       ▪ Do you come across as a credible, courteous person?
+       ▪ Is your reflection coherent?
+
+3. Assessment Overview: The communication portfolio is worth 20% of your final grade, a breakdown
+of which is as follows:
+                                Showcase four pieces of work                                    40%
+                                Reflection on course, development                               30%
+                                LinkedIn profile                                                10%
+                                Uniquely tailored                                               10%
+                                Positive, professional impression                               10%
+
+4. Platform Suggestions and Additional Resources: To create your portfolio, you may use any platform
+of your choosing. Your portfolio can be either publicly available (website) or can be privately but with
+access (e.g. password) provided to the instructional team as part of your submission. You should
+ensure that the instructional team can access it at least until May 31st, 2026, if not longer.
+Keep in mind that many platforms will impose restrictions on free accounts, and that this may prove
+problematic in the context of this term project. For this reason, it is recommended that you use one of
+the platforms suggested below.
+   ▪ Google Sites: https://sites.google.com/
+   ▪ Wordpress: https://wordpress.com/support/portfolios/
+   ▪ Wix: https://www.wix.com/portfolio-website
+   ▪ Crevado: https://crevado.com/create-online-portfolio/basic
+Tutorials for creating a portfolio in Wordpress and Wix are available on eClass. You may also find the
+below resources (which are available on eClass) useful when completing your portfolio:
+   Gibbs Reflective Cycle (you may find this useful if you are struggling with the reflection section):
+   https://www.ed.ac.uk/reflection/reflectors-toolkit/reflecting-on-experience/gibbs-reflective-cycle
+   A number of additional reflection models and frameworks can be found here:
+   https://www.eng.mcmaster.ca/resources/instructor-reflection-toolkit#Models-Frameworks
+   LinkedIn Profile Checklist: contains guidance for completing your LinkedIn profile:
+   https://university.linkedin.com/content/dam/university/global/en_US/site/pdf/LinkedIn_Sample_Profile_onesheet-David.pdf
+
+ENG 2003 Effective Engineering Communication                                                                            Page 3 of 6
+5. AI Disclosure: It is well understood and accepted that generative AI is a transformative technology
+that will revolutionize the way we conduct professional and personal business including
+communicating with others. At the same time, it is self-evident that developing effective professional
+communication skills including writing emails, documents, reports etc. comes with practice of the art,
+and requires experiencing critical thinking, cognitive rigour, logical reasoning, and lots of feedback and
+reflection. In ENG2003, we prefer and recommend that students avoid the use of generative AI tools
+(e.g. ChatGPT, Bard/Bing, Dall-E etc) and instead formulate their own expressions of professional
+communications.
+
+However, in the spirit of innovation and not being an impediment to change and new technologies, we
+will accept the final report and its associated phases created with the assistance of such generative AI
+tools, provided that the students openly disclose that such tools were used, AND follow these specific
+instructions:
+      • Students must not wholly rely on the use of AI and must ensure they are making appropriate
+          edits to the AI-generated text and/or images.
+      • Disclose the use of AI with a 200 word (min) or more statement in a new page at the end of
+          each deliverable.
+      • In the statement, mention the process of how you used AI to research/generate your content,
+          and also what edits and/or improvements you have made.
+      • Include screenshots and/or other evidence (example cases) documenting your process of AI
+          use and improvement.
+      • The AI disclosure statement must not be prepared using generative AI. It is a student’s
+          responsibility to ensure this statement is written in their own words and in a more personal
+          and reflective manner.
+
+Failure to disclose the use of AI tools will be considered a breach of academic integrity and will result in
+a failure in the assignment and reporting to the Academic Integrity office in Lassonde.
+
+ NOTE: For term project 2, the AI disclosure statement should be submitted as a separate document
+                            as part of your submission package on eClass.
+
+6. Submission to TurnItIn: Submit the written portions of the showcase descriptions AND reflection to
+TurnItIn submission link on eClass. Don’t worry about formatting here. You can upload your document
+as a .doc or .pdf file. A 20% penalty will apply for students missing a TurnItIn submission. Be sure to
+follow the correct naming convention for filename AND TurnItIn title:
+e.g. FirstName_LastName_ENG2003W24_TermProject2.pdf
+
+7. Submission to eClass Assignment: Submit the portfolio access link/URL and any other relevant
+information (e.g. access instructions) to the eClass Assignment Submission link in the Term Project 2
+section on the course website. The instructional team will only grade the content on the single URL
+provided, so make sure every section of it is complete and accessible. Be sure to follow the correct
+naming convention for any file names being submitted:
+e.g. FirstName_LastName_ENG2003W24_TermProject2_FileDescription.pdf
+
+
+
+ENG 2003 Effective Engineering Communication                                                     Page 4 of 6
+Rubric:
+                                              Showcase                            /40
+                                              Reflection                          /30
+                                           LinkedIn profile                       /10
+                                          Uniquely tailored                       /10
+                                  Positive, professional impression               /10
+                                                 Total                           /100
+
+
+                                         Showcases* (40 marks)
+ *Note: Three of the selected works must be from ENG 2003. The fourth work must be a communications-related work
+ from another course or activity (e.g. hackathon, conference presentation etc), but it should have been completed this
+                                                    year (2025-2026).
+                                                            Showcase 1     Showcase 2       Showcase 3 Showcase 4*
+ Criteria                                                   (ENG 2003)     (ENG 2003)       (ENG 2003)      (Other)
+ Explained why the piece was chosen                                  /3             /3              /3             /3
+ Explained how the piece reflects the student’s
+                                                                     /2             /2              /2             /2
+ development as a communicator
+ Piece showcases the student’s communication
+                                                                     /2             /2              /2             /2
+ skills
+ Piece was effectively communicated                                 /3              /3             /3              /3
+                                                Total              /10             /10            /10             /10
+Comments:
+
+                                         Reflections (30 marks)
+                                 Part A – Overall Course Reflection (250+ words)
+ Student describes, in clear natural language, with the help of 3+ examples,                                       /7
+     a) their overall experience in ENG 2003;
+     b) whether the course was in line with their expectations;
+     c) the course content they found the most useful; and
+     d) the topic they found most interesting.
+ Student demonstrates an understanding of the axioms of communication.                                             /4
+ Student evidently applied the 7 C’s and/or one of the provided reflection frameworks.                             /4
+                                                                                                    Total         /15
+
+                             Part B – Personal Growth/Development (250+ words)
+ Student describes, with the help of 3+ examples,                                                                  /7
+     a) the extent to which their communication skills improved through ENG 2003;
+     b) which communication skills they improved the most;
+     c) which communication skills they still need to work on; and
+     d) how the course will affect the way they approach other courses (and/or engineering
+        practice).
+ Student demonstrates an understanding of the axioms of communication.                                             /4
+ Student evidently applied the 7 C’s and/or one of the provided reflection frameworks.                             /4
+                                                                                                    Total         /15
+Comments:
+
+
+
+ENG 2003 Effective Engineering Communication                                                                Page 5 of 6
+                                     LinkedIn Profile (10 marks)
+ Descriptive headline                                                                                              /1
+ Clear, concise summary                                                                                            /1
+ Education includes current undergraduate program                                                                  /1
+ Five skills listed                                                                                                /1
+ LinkedIn profile was easy to find on portfolio                                                                    /1
+ Content and professionalism                                                                                       /5
+                                                                                                    Total         /10
+Comments:
+
+
+
+                                   Uniquely Tailored (10 marks)
+ Hobbies and interests are presented in a visually compelling way (e.g., original use of figures,                  /5
+ layout)
+ Articulates how the hobbies and interests demonstrate transferrable skills.                                       /5
+                                                                                                    Total         /10
+Comments:
+
+
+
+                   Professionalism and Overall Impression (10 marks)
+ Overall impression of the portfolio                                                                               /5
+ The portfolio is neatly structured, professional, and easy to follow                                              /5
+                                                                                                    Total         /10
+Comments:
+
+
+
+
+ENG 2003 Effective Engineering Communication                                                                Page 6 of 6
+
